@@ -17,7 +17,7 @@ activity-compose = "1.9.3"
 ktor = "3.0.2"
 
 # Exposed
-exposed = "0.57.0"
+exposed = "1.0.0"
 
 # Database
 postgres = "42.7.7"
