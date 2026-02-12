@@ -2,113 +2,113 @@
 
 ## Overview
 
-Este proyecto implementa un Monorepo Kotlin Multiplatform (KMP) llamado "OpenSchool" con Kotlin 2.0, Gradle DSL y Version Catalog.
+This project implements a Kotlin Multiplatform (KMP) Monorepo called "OpenSchool" with Kotlin 2.0, Gradle DSL, and Version Catalog.
 
-## Estructura del Proyecto
+## Project Structure
 
-### Módulos
+### Modules
 
 #### 1. :shared
-**Propósito**: Módulo compartido multiplataforma para DTOs (Data Transfer Objects)
+**Purpose**: Shared multiplatform module for DTOs (Data Transfer Objects)
 
 **Targets**: 
 - Android (minSdk 24, compileSdk 35)
 - JVM (Java 17)
 
-**Dependencias**:
-- kotlinx-serialization-json: Para serialización/deserialización de DTOs
-- kotlinx-coroutines-core: Para programación asíncrona
-- koin-core: Para inyección de dependencias
+**Dependencies**:
+- kotlinx-serialization-json: For DTO serialization/deserialization
+- kotlinx-coroutines-core: For asynchronous programming
+- koin-core: For dependency injection
 
-**Configuración**: `shared/build.gradle.kts`
+**Configuration**: `shared/build.gradle.kts`
 
 #### 2. :backend  
-**Propósito**: Servidor API REST con Ktor
+**Purpose**: REST API server with Ktor
 
 **Target**: JVM (Java 17)
 
-**Tecnologías**:
-- **Ktor 3.0.2**: Framework web asíncrono
+**Technologies**:
+- **Ktor 3.0.2**: Asynchronous web framework
   - Server Core & Netty
   - Content Negotiation
   - JSON Serialization
   - Call Logging
   - CORS Support
   - Status Pages
-- **Exposed 0.57.0**: ORM para Kotlin
+- **Exposed 1.0.0**: ORM for Kotlin
   - Core, DAO, JDBC
   - Java Time support
-- **PostgreSQL 42.7.4**: Driver de base de datos
+- **PostgreSQL 42.7.7**: Database driver
 - **HikariCP 6.2.1**: Connection pooling
-- **Koin**: Dependency injection para Ktor
+- **Koin**: Dependency injection for Ktor
 - **Logback**: Logging
 
-**Configuración**: `backend/build.gradle.kts`
+**Configuration**: `backend/build.gradle.kts`
 
 #### 3. :androidApp
-**Propósito**: Aplicación móvil Android con Jetpack Compose
+**Purpose**: Android mobile application with Jetpack Compose
 
-**Configuración Android**:
+**Android Configuration**:
 - Application ID: com.openschool.android
 - minSdk: 24
 - targetSdk: 35  
 - compileSdk: 35
 - JVM Target: 17
 
-**Tecnologías**:
-- **Jetpack Compose**: UI moderno declarativo
+**Technologies**:
+- **Jetpack Compose**: Modern declarative UI
   - Compose BOM 2024.12.01
   - Material 3
   - UI Tooling
   - Activity Compose
-- **Koin**: Dependency injection para Android y Compose
-- **Kotlin Coroutines**: Programación asíncrona
-- **Kotlin Serialization**: Manejo de JSON
+- **Koin**: Dependency injection for Android and Compose
+- **Kotlin Coroutines**: Asynchronous programming
+- **Kotlin Serialization**: JSON handling
 
-**Configuración**: `androidApp/build.gradle.kts`
+**Configuration**: `androidApp/build.gradle.kts`
 
-## Archivos de Configuración
+## Configuration Files
 
 ### gradle/libs.versions.toml
-Version Catalog centralizado que define:
-- **Versiones**: Todas las versiones de dependencias en un solo lugar
-- **Librerías**: Referencias a bibliotecas con group:artifact:version
-- **Plugins**: Plugins de Gradle con IDs y versiones
-- **Bundles**: Grupos de dependencias relacionadas (ktor-server, exposed, compose)
+Centralized Version Catalog that defines:
+- **Versions**: All dependency versions in one place
+- **Libraries**: References to libraries with group:artifact:version
+- **Plugins**: Gradle plugins with IDs and versions
+- **Bundles**: Groups of related dependencies (ktor-server, exposed, compose)
 
-Beneficios:
-- Gestión centralizada de versiones
-- Autocompletado en IDEs
+Benefits:
+- Centralized version management
+- IDE autocompletion
 - Type-safe accessors
-- Fácil actualización de dependencias
+- Easy dependency updates
 
 ### build.gradle.kts (Root)
-Configuración raíz del proyecto:
-- Declara plugins sin aplicarlos (`apply false`)
-- Configura `allprojects` con group y version comunes
-- Define tarea `clean` compartida
+Root project configuration:
+- Declares plugins without applying them (`apply false`)
+- Configures `allprojects` with common group and version
+- Defines shared `clean` task
 
 ### settings.gradle.kts
-Configuración del multi-módulo:
-- Define nombre del proyecto: "OpenSchool"
-- Habilita TYPESAFE_PROJECT_ACCESSORS
-- Configura repositorios en `pluginManagement`:
+Multi-module configuration:
+- Defines project name: "OpenSchool"
+- Enables TYPESAFE_PROJECT_ACCESSORS
+- Configures repositories in `pluginManagement`:
   - Gradle Plugin Portal
   - Google Maven
   - Maven Central
-- Configura `dependencyResolutionManagement`:
-  - Mode: FAIL_ON_PROJECT_REPOS (todas las deps desde repos centrales)
-  - Repositorios: Google y Maven Central
-- Incluye los 3 módulos: :shared, :backend, :androidApp
+- Configures `dependencyResolutionManagement`:
+  - Mode: FAIL_ON_PROJECT_REPOS (all deps from central repos)
+  - Repositories: Google and Maven Central
+- Includes the 3 modules: :shared, :backend, :androidApp
 
 ### gradle.properties
-Configuraciones de Gradle:
-- **JVM Args**: -Xmx2048m para mejor performance
-- **Flags de optimización**:
-  - parallel=true: Builds paralelos
-  - caching=true: Cache de builds
+Gradle configurations:
+- **JVM Args**: -Xmx2048m for better performance
+- **Optimization flags**:
+  - parallel=true: Parallel builds
+  - caching=true: Build caching
   - daemon=true: Gradle daemon
-  - configureondemand=true: Configuración bajo demanda
+  - configureondemand=true: Configuration on demand
 - **Kotlin**: 
   - code.style=official
   - mpp.androidSourceSetLayoutVersion=2
@@ -116,112 +116,112 @@ Configuraciones de Gradle:
   - useAndroidX=true
   - nonTransitiveRClass=true
 
-## Comandos de Build
+## Build Commands
 
-### Listar proyectos
+### List projects
 ```bash
 ./gradlew projects
 ```
 
-### Build completo
+### Complete build
 ```bash
 ./gradlew build
 ```
 
-### Build por módulo
+### Build by module
 ```bash
 ./gradlew :shared:build
 ./gradlew :backend:build  
 ./gradlew :androidApp:build
 ```
 
-### Ejecutar backend
+### Run backend
 ```bash
 ./gradlew :backend:run
 ```
 
-### Instalar app Android
+### Install Android app
 ```bash
 ./gradlew :androidApp:installDebug
 ```
 
-### Limpiar builds
+### Clean builds
 ```bash
 ./gradlew clean
 ```
 
-## Tecnologías y Versiones
+## Technologies and Versions
 
-| Tecnología | Versión | Uso |
-|------------|---------|-----|
-| Kotlin | 2.0.21 | Lenguaje principal |
-| Gradle | 8.11.1 | Sistema de build |
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Kotlin | 2.0.21 | Main language |
+| Gradle | 8.11.1 | Build system |
 | AGP | 8.2.2 | Android Gradle Plugin |
 | Ktor | 3.0.2 | Backend framework |
-| Exposed | 0.57.0 | ORM |
-| PostgreSQL Driver | 42.7.4 | Database |
-| Compose BOM | 2024.12.01 | UI Android |
+| Exposed | 1.0.0 | ORM |
+| PostgreSQL Driver | 42.7.7 | Database |
+| Compose BOM | 2024.12.01 | Android UI |
 | Koin | 4.0.1 | Dependency Injection |
 | Serialization | 1.7.3 | JSON handling |
 | Coroutines | 1.9.0 | Async programming |
 
-## Características Destacadas
+## Key Features
 
 ### 1. Version Catalog
-Todos los dependencies centralizados en `gradle/libs.versions.toml`:
+All dependencies centralized in `gradle/libs.versions.toml`:
 ```kotlin
-// En build.gradle.kts
+// In build.gradle.kts
 implementation(libs.ktor.server.core)
-implementation(libs.bundles.ktor.server)  // Bundle de múltiples deps
+implementation(libs.bundles.ktor.server)  // Bundle of multiple deps
 ```
 
 ### 2. Kotlin Multiplatform (:shared)
-Código compartido entre Android y JVM:
+Shared code between Android and JVM:
 ```
 shared/
   src/
-    commonMain/    <- Código compartido
-    androidMain/   <- Específico Android
-    jvmMain/       <- Específico JVM
+    commonMain/    <- Shared code
+    androidMain/   <- Android-specific
+    jvmMain/       <- JVM-specific
 ```
 
-### 3. Inyección de Dependencias con Koin
-Configurado en los 3 módulos:
+### 3. Dependency Injection with Koin
+Configured in all 3 modules:
 - :shared -> koin-core
 - :backend -> koin-ktor  
 - :androidApp -> koin-android + koin-compose
 
 ### 4. Kotlin Serialization
-Configurado en todos los módulos para manejo consistente de JSON
+Configured in all modules for consistent JSON handling
 
-## Próximos Pasos
+## Next Steps
 
-1. **Implementar DTOs en :shared**
-   - Crear data classes con @Serializable
-   - Definir modelos de dominio
+1. **Implement DTOs in :shared**
+   - Create data classes with @Serializable
+   - Define domain models
 
-2. **Configurar Backend**
-   - Setup de base de datos con Exposed
-   - Definir rutas de Ktor
-   - Implementar repositorios
+2. **Configure Backend**
+   - Database setup with Exposed
+   - Define Ktor routes
+   - Implement repositories
 
-3. **Desarrollar Android App**
-   - Crear composables de UI
-   - Implementar ViewModels
-   - Configurar navegación
+3. **Develop Android App**
+   - Create UI composables
+   - Implement ViewModels
+   - Configure navigation
 
-## Requisitos
+## Requirements
 
-- **JDK**: 17 o superior
-- **Android SDK**: Para módulo androidApp
+- **JDK**: 17 or higher
+- **Android SDK**: For androidApp module
   - Build Tools 35.x
   - Android SDK Platform 35
-- **PostgreSQL**: Para backend (runtime)
-- **IDE**: IntelliJ IDEA o Android Studio
+- **PostgreSQL**: For backend (runtime)
+- **IDE**: IntelliJ IDEA or Android Studio
 
-## Notas
+## Notes
 
-- El proyecto usa Gradle 8.11.1 con soporte completo para Kotlin 2.0
-- Android minSdk 24 (Android 7.0+) para amplia compatibilidad
-- Java 17 es el target para mejor performance y features modernos
-- Version Catalog permite actualizaciones centralizadas de dependencias
+- The project uses Gradle 8.11.1 with full support for Kotlin 2.0
+- Android minSdk 24 (Android 7.0+) for wide compatibility
+- Java 17 is the target for better performance and modern features
+- Version Catalog allows centralized dependency updates
