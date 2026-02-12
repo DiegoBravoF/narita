@@ -20,7 +20,7 @@ ktor = "3.0.2"
 exposed = "0.57.0"
 
 # Database
-postgres = "42.7.4"
+postgres = "42.7.7"
 hikari = "6.2.1"
 
 # Koin
